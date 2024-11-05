@@ -29,7 +29,7 @@ block TreesColumnDeleter oftype ColumnDeleter {  //Sheet --> Sheet
   block TreesTableInterpreter oftype TableInterpreter { //Sheet --> Table
     header: true;
     columns: [
-      "lfd_nr" oftype decimal, //integer
+      "lfd_nr" oftype integer, //integer
       "stadtteil" oftype Valid_stadtteil,
       "standort" oftype text, 
       "baumart_botanisch" oftype text,
