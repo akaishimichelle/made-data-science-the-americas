@@ -1,0 +1,74 @@
+//Exercise 2
+
+pipeline TreesPipeline {
+
+  TreesExtractor
+   -> TreesTextFileInterpreter;
+
+TreesTextFileInterpreter
+    -> TreesCSVInterpreter
+    -> TreesColumnDeleter
+    -> TreesTableInterpreter
+    -> TreesLoader;
+
+  //Blocks Description
+
+  block TreesExtractor oftype HttpExtractor { //None --> Binary File
+
+    // Here, we specify the URL where the file shall be downloaded from.
+    url: "https://opendata.rhein-kreis-neuss.de/api/v2/catalog/datasets/stadt-neuss-herbstpflanzung-2023/exports/csv";
+  }
+
+  block TreesTextFileInterpreter oftype TextFileInterpreter {} //File --> Text file
+   
+  block TreesCSVInterpreter oftype CSVInterpreter { //Text file --> Sheet
+    delimiter: ";";
+  }
+
+block TreesColumnDeleter oftype ColumnDeleter {  //Sheet --> Sheet
+   delete: [column E];
+ }
+
+  block TreesTableInterpreter oftype TableInterpreter { //Sheet --> Table
+    header: true;
+    columns: [
+      "lfd_nr" oftype decimal, //integer
+      "stadtteil" oftype Valid_stadtteil,
+      "standort" oftype text, 
+      "baumart_botanisch" oftype text,
+      "id" oftype r_id, 
+      "baumfamilie" oftype text,
+    ];
+  }
+
+ 
+  // 15. As a last step, we load the table into a sink,
+  // here into a sqlite file.
+  // The structural information of the table is used
+  // to generate the correct table.
+  block TreesLoader oftype SQLiteLoader { //Table --> None
+    table: "trees";
+    file: "./trees.sqlite";
+  }
+}
+
+publish valuetype Valid_stadtteil oftype text{
+  constraints: [v_stadtteil,];
+ }
+
+publish valuetype r_id oftype text{
+  constraints: [regex_id,];
+ }
+
+//valid stadtteil starts with "Vogelsang"
+constraint v_stadtteil on text: value matches /^Vogelsang/;
+
+
+//defining "id", which contains geopoints with the following pattern:
+//{geo-coordinate 1}, {geo-coordinate 2}
+//a geo-coordinate is defined as {1-3 numbers}.{numbers} e.g. 51.1651, 6.69814
+constraint regex_id on text: value matches /^(\d{1,3}\.\d+)\, (\d{1,3}\.\d+)$/;   
+
+
+
+
