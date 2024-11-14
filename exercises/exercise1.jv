@@ -7,7 +7,7 @@ pipeline AirportsPipeline {
 
 AirportsTextFileInterpreter
     -> AirportsCSVInterpreter
-   // -> AirportDataSelector
+    -> AirportDataSelector
     -> AirportsTableInterpreter
     -> AirportsLoader;
 
@@ -34,9 +34,9 @@ AirportsTextFileInterpreter
   block AirportsTableInterpreter oftype TableInterpreter { //Sheet --> Table
     header: true;
     columns: [
-      "Lfd. Nummer" oftype integer,
+      "Lfd. Nummer" oftype decimal, //integer
       "Name des Flughafens" oftype text,
-      "Ort" oftype text,
+      "Ort" oftype text, 
       "Land" oftype text,
       "IATA" oftype text, //num and text both
       "ICAO" oftype text,
