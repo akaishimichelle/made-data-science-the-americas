@@ -2,32 +2,35 @@
 
 ## Title
 
-Tackling Femicide through education in Latin America: Do countries with higher education inquality rates have lower femicide cases?
+Productivity and Poverty level trends among women in the USA: A case study of patterns from the 20th and 21st centuries
 
 ## Main Question
-Do countries with higher education inquality rates have lower femicide cases?
+How poverty levels among different women groups were affected by changes in productivity levels across 2 centuries?
+What are the difference in trends across the years (1980-1990 vs 2010-2020)?
+
+Follow-up questions:
+What are the key highlights in the two decades from different centuries?
+What are the differing trends among black, white and hispanic women groups?
+
 
 ## Description
-Latin America has a history of violence due to multiple factors including drugs, cartels, civil unrest and political corruption..etc
-Among the many existing issues which plague their society, one of them is: Femicide. 
+Statistics have shown us that productivity and hourly compensaion has direct correlation with povertly levels i.e. rise in productivity 
+among workers, increases the poverty threshold. Therefore, it introduced significant shifts influenced by social, economic, and policy changes. Even in the USA, in the late 20th century, although trends did shift towards women empowerment, they still had limited access to education, employment, and financial independence. This contributed to high number of families living below the poverty line. In the 21st century, increased educational and professional opportunities for women contributed to economic independence and lower poverty rates. 
 
-Femicide is defined as "the killing of a woman or a girl, in particular by a man and on account of her gender."  It is not just another form of violence but is an intentional murder based on gender, instilled in misogyny and patriarchal systems. 
-
-This study aims to find patterns between disparity in education levels and femicide rates in the last decade in Latin America, providing insights into how we, as a society, may tackle this problem by giving everyone equal opportunities for education. 
-
+This case study aims to compare the trends for poverty and productivty levels among women in the USA for two time periods 1950-1960 and 2010-2020. It also brings insights into the patterns within different women demographics based on race (white, black and hispanic).
 
 ## Datasources
-### Datasource1: Inequality in Education Around the World
-* Metadata URL: https://www.kaggle.com/datasets/iamsouravbanerjee/inequality-in-education-around-the-world
-* Data URL: https://www.kaggle.com/datasets/iamsouravbanerjee/inequality-in-education-around-the-world
+### Datasource1: Poverty-Level Wages in the USA Dataset (1973-2022)
+* Metadata URL: https://www.kaggle.com/datasets/asaniczka/poverty-level-wages-in-the-usa-dataset-1973-2022
+* Data URL: https://www.kaggle.com/datasets/asaniczka/poverty-level-wages-in-the-usa-dataset-1973-2022
 * Data Type: CSV
-* Content: Contains data for education inquality rates around the world
+* Content: Contains information on poverty-level wages in the United States from 1973 to 2022.
 
-### Datasource2: Latin America - Femicides & Maternal Mortality
-* Metadata URL: https://www.kaggle.com/datasets/natalyreguerin/latin-america-femicides-and-maternal-mortality
-* Data URL: https://www.kaggle.com/datasets/natalyreguerin/latin-america-femicides-and-maternal-mortality
+### Datasource2: Productivity and Hourly Compensation (1948-2021)
+* Metadata URL: https://www.kaggle.com/datasets/asaniczka/productivity-and-hourly-compensation-1948-2021
+* Data URL: https://www.kaggle.com/datasets/asaniczka/productivity-and-hourly-compensation-1948-2021
 * Data Type: CSV
-* Content: Contains data for femicide and maternal mortality rates around the world
+* Content: Contains insight into the productivity and hourly compensation trends in the United States from 1948 to 2021.
 
 ## Work Packages
 1. Exploring the topic
