@@ -1,0 +1,83 @@
+//Exercise 3
+
+pipeline CountryStatsPipeline {
+    //Mutual "Parent" Pipeline
+  CountryStatsExtractor
+    -> CountryStatsXLSXInterpreter
+    -> CountryStatsSheetPicker
+    -> CountryStatsColumnWriter
+    -> CountryStatsDataSelector;
+        
+    //Child Pipeline1: for 'bondIssuance' Table    
+    CountryStatsDataSelector
+    -> bCountryStatsTableInterpreter
+    -> CountryStats_BondIssuanceLoader;
+
+    //Child Pipeline2: for 'gdpPerCapita' Table    
+    CountryStatsDataSelector
+    -> CountryStatsTableInterpreter
+    -> CountryStats_GDPLoader;
+
+  //Blocks Description
+  block CountryStatsExtractor oftype HttpExtractor { //None --> Binary File
+
+    url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
+  }
+
+  block CountryStatsXLSXInterpreter oftype XLSXInterpreter { } //File --> Workbook
+
+  block CountryStatsSheetPicker oftype SheetPicker { //Workbook --> Sheet
+   sheetName: 'Figure S5.1.2';
+ }
+
+   block CountryStatsColumnWriter oftype CellWriter {
+   at: range P2:S2;
+   write: ["Country Code", "Economy","GDP per capita", "Bond Issuance Share"];
+ }
+
+ block CountryStatsDataSelector oftype CellRangeSelector { //Sheet --> Sheet
+   select: range P2:S45;
+ }
+
+  block bCountryStatsTableInterpreter oftype TableInterpreter { //Sheet --> Table
+    header: true;
+    columns: [
+      "Country Code" oftype CountryCodeAlpha3, 
+      "Bond Issuance Share" oftype BondIssuanceShare,
+    ];
+  }
+
+  block CountryStatsTableInterpreter oftype TableInterpreter { //Sheet --> Table
+    header: true;
+    columns: [
+      "Country Code" oftype CountryCodeAlpha3, 
+      "GDP per capita" oftype GDP, 
+    ];
+  }
+
+  //Table1
+  block CountryStats_BondIssuanceLoader oftype SQLiteLoader { //Table --> None
+    table: "bondIssuance";
+    file: "./country-stats.sqlite";
+  }
+
+  //Table2
+  block CountryStats_GDPLoader oftype SQLiteLoader { //Table --> None
+    table: "gdpPerCapita";
+    file: "./country-stats.sqlite";
+  }
+}
+
+publish valuetype GDP oftype decimal {
+    constraints: [ GDPRange ];
+}
+
+publish valuetype BondIssuanceShare oftype decimal {
+    constraints: [ BondIssuanceShareRange ];
+}
+
+constraint GDPRange on decimal:
+    value > 0;
+
+constraint BondIssuanceShareRange on decimal:
+    value >= 0 and value <= 1;
