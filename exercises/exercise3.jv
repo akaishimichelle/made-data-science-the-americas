@@ -20,7 +20,6 @@ pipeline CountryStatsPipeline {
 
   //Blocks Description
   block CountryStatsExtractor oftype HttpExtractor { //None --> Binary File
-
     url: "https://thedocs.worldbank.org/en/doc/7d852628d96b9411d43e5d36d5dff941-0050062022/original/Graphs-Chapter-5-02082022.xlsx";
   }
 
@@ -32,7 +31,7 @@ pipeline CountryStatsPipeline {
 
    block CountryStatsColumnWriter oftype CellWriter {
    at: range P2:S2;
-   write: ["Country Code", "Economy","GDP per capita", "Bond Issuance Share"];
+   write: ["Country Code", "Economy","GDP per Capita", "Bond Issuance Share"];
  }
 
  block CountryStatsDataSelector oftype CellRangeSelector { //Sheet --> Sheet
@@ -51,7 +50,7 @@ pipeline CountryStatsPipeline {
     header: true;
     columns: [
       "Country Code" oftype CountryCodeAlpha3, 
-      "GDP per capita" oftype GDP, 
+      "GDP per Capita" oftype GDP, 
     ];
   }
 
