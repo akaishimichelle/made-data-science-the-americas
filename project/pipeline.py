@@ -1,38 +1,68 @@
-import requests
 import sqlite3
 import pandas as pd
 import os
 import zipfile
 import kagglehub
-
+from requests.exceptions import HTTPError, ConnectionError
+import sys
 
 def extract_data_set(dataset_url):
-    path = kagglehub.dataset_download(dataset_url)
-    downloaded_files = os.listdir(path)
-    
-    csv_files = [f for f in downloaded_files if f.endswith('.csv')]        
-    csv_file_path = os.path.join(path,csv_files[0])
+    try:
+        path = kagglehub.dataset_download(dataset_url)
+        downloaded_files = os.listdir(path)
+        
+        csv_files = [f for f in downloaded_files if f.endswith('.csv')]        
+        csv_file_path = os.path.join(path,csv_files[0])
 
-    df = pd.read_csv(csv_file_path,delimiter=',')
+        df = pd.read_csv(csv_file_path,delimiter=',')
+
+    except HTTPError as he:
+        sys.exit("Invalid URL. Please enter correct URL for the dataset.")
+
+    except ConnectionError as ce:
+        sys.exit("Network issue. Please check you internet connection and retry.")
+
+    except Exception as e:
+        sys.exit("An error occured. Please retry.")    
     return df
 
+def transformByYear(data):
+    try:
+        year_1980_to_year_1990 = data['year'].between(1980,1990)
+        year_2010_to_year_2020 = data['year'].between(2010,2020)
+        data = data[year_1980_to_year_1990 + year_2010_to_year_2020]
 
-def transformByYear(data) :
-    year_1980_to_year_1990 = data['year'].between(1980,1990)
-    year_2010_to_year_2020 = data['year'].between(2010,2020)
-    data = data[year_1980_to_year_1990 + year_2010_to_year_2020]
+        if len(data) != 22:
+          sys.exit("Insufficient data: Data does not cover 2 decades.")
+
+    except KeyError as ke:
+        sys.exit("The specified column does not exist in the dataset.")
+
     return data
 
 def transformSelectColumns(data,columns):
-    data = data[columns]
-    return data
+        if len(columns) == 0:
+         sys.exit("No columns specified. Please assign them again.")
+       
+        invalid_cols = [col for col in columns if col not in data.columns]
+
+        #all columns are invalid
+        if len(invalid_cols) == len(columns):
+            sys.exit("Invalid columns: Please specify correct columns.")
+
+        #some columns are valid
+        else:
+            valid_cols = [col for col in columns if col in data.columns]
+            data = data[valid_cols]
+            return data 
 
 def transformMerge(data1, data2, onkey = ""):
-    merged = data1.join(data2.set_index(onkey), on=onkey)
-    return merged
-
-# def transformAddColumns(mergedData):
-#     mergedData[""]
+    try:
+        merged = data1.join(data2.set_index(onkey), on=onkey)
+        return merged
+    
+    except KeyError as ke:
+        sys.exit("The specified column(key) does not exist in the dataset.")
 
 def transformFillMissingValuesWithMean(mergedData):
     yearColumn = "year"
@@ -59,8 +89,8 @@ if __name__ == "__main__":
     "asaniczka/poverty-level-wages-in-the-usa-dataset-1973-2022"
     ]
 
-    select_poverty_columns = ["year", "annual_poverty-level_wage", "white_women_share_below_poverty_wages", "black_women_share_below_poverty_wages", "hispanic_women_share_below_poverty_wages"]
-    select_productivity_columns = ["year", "net_productivity_per_hour_worked", "average_compensation", "women_median_compensation"]
+    select_poverty_columns = ["year", "annual_poverty-level_wage", "hourly_poverty-level_wage", "men_share_below_poverty_wages", "men_300%+_of_poverty_wages", "women_share_below_poverty_wages", "women_300%+_of_poverty_wages",]
+    select_productivity_columns = ["year", "net_productivity_per_hour_worked", "average_compensation", "median_compensation", "men_median_compensation", "women_median_compensation"]
 
     # EXTRACTION
     productivity_data_set = extract_data_set(urls[0])
@@ -74,10 +104,7 @@ if __name__ == "__main__":
     tf_poverty_data_set = transformSelectColumns(tf_poverty_data_set,select_poverty_columns)
 
     tf_merged_dataset = transformMerge(tf_productivity_dataset, tf_poverty_data_set, "year")
-    tf_merged_dataset = transformFillMissingValuesWithMean(tf_merged_dataset)
-
-    #print(tf_merged_dataset.shape)
-
+    
     # LOAD
     loadDataSet(tf_merged_dataset)
 
