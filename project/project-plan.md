@@ -7,9 +7,9 @@ A case study of economic dynamics in the USA from the 20th and 21st centuries; m
 ## Main Question
 How has productivity and median compensation affected the annual poverty level wages in the USA from two distinct time periods? 
 
-Follow-up questions:
-What are some major patterns from the 2 time periods (1980-1990 vs 2010-2020)? 
-What are some major patterns based on gender for these parameters? 
+Follow-up questions:  <br>
+What are some major patterns from the 2 time periods (1980-1990 vs 2010-2020)?  
+What are some major patterns based on gender for these parameters?
 
 
 ## Description
