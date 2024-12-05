@@ -102,7 +102,6 @@ def main():
 
     tf_productivity_dataset = transformSelectColumns(tf_productivity_dataset,select_productivity_columns)
     tf_poverty_data_set = transformSelectColumns(tf_poverty_data_set,select_poverty_columns)
-    print(tf_poverty_data_set.shape)
 
     tf_merged_dataset = transformMerge(tf_productivity_dataset, tf_poverty_data_set, "year")
     

@@ -18,7 +18,7 @@ class pipeline_tests(unittest.TestCase):
              os.remove(self.output_file)
 
     #Unit Test1
-    def test_transformByYear(self):
+    def test_01_transformByYear(self):
         #Test data
         data = pd.DataFrame({
             'year':[1950, 1960, 1965,1980, 1981, 1982, 1983, 1984, 1985, 1986, 1987, 1988, 1989, 1990, 
@@ -32,10 +32,10 @@ class pipeline_tests(unittest.TestCase):
                                  ((transformed_data['year'] >= 2010) & (transformed_data['year'] <= 2020))
         invalid_years = transformed_data[~valid_years_condition]
         self.assertTrue(invalid_years.empty, f"Test Failed: Invalid years found: {invalid_years['year'].tolist()}")
-        print("Unit Test1 Passed: for transformByYear()")
+        print("Unit Test1 Passed: for transformByYear() for years 1980-1990 and 2010-2020")
 
     #Unit Test2
-    def test_transformSelectColumns(self):
+    def test_02_transformSelectColumns(self):
         #Test data
         data = pd.DataFrame({
             'year': [1980, 1981, 1982],
@@ -55,8 +55,25 @@ class pipeline_tests(unittest.TestCase):
         self.assertEqual(transformed_data.shape, (3, 2), f"Test Failed: Expected shape (3, 2), but got {transformed_data.shape}")
         print("Unit Test2 Passed: for transformSelectColumns() with invalid columns")
 
+    #Unit Test3
+    def test_03_transformMerge(self):
+        #Test data
+        data1 = pd.DataFrame({
+            'year': [1980, 1981, 1982],
+            'wage': [1, 2, 3]
+        })
+        data2 = pd.DataFrame({
+            'year': [1980, 1981, 1982],
+            'hours': [40, 45, 50]
+        })
+
+        merged_data = transformMerge(data1, data2, onkey='year')
+        self.assertEqual(merged_data.shape, (3, 3), f"Test Failed: Expected shape (3, 3), but got {merged_data.shape}")
+        print("Unit Test3 Passed: for transformMerge() with valid key column")
+
+
     #System-level test: tests if the pipeline executes successfully and the DB is created & populated successfully
-    def test_pipeline_execution(self):
+    def test_04_pipeline_execution(self):
         main()
 
         #Test1: tests if the DB is created
@@ -77,6 +94,8 @@ class pipeline_tests(unittest.TestCase):
         self.assertGreater(count, 0, "The output table is empty.")
 
         conn.close()
+
+        print("System test passed!")
 
     def tearDown(self):
         """Environment cleanup after each test"""
