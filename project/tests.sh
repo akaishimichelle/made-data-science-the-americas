@@ -1,5 +1,14 @@
 #!/bin/bash
 
+# Get the directory of the script (the test.sh file)
+SCRIPT_DIR=$(dirname "$(realpath "$0")")
+
+# Set the path to the tests.py file (inside the project folder)
+TESTS_PY="$SCRIPT_DIR/tests.py"
+
+# Run the Python test script
+python3 "$TESTS_PY"
+
 #As a pre-requisite, 
 #   1. Please make sure to be signed in to kaggle
 #   2. Go to kaggle settings and create a new token (under API section). This will generate a "kaggle.json" file
@@ -15,4 +24,4 @@
 #        import kagglehub
 
 
-python3 ./project/tests.py
+
