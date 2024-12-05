@@ -79,17 +79,17 @@ def loadDataSet(dataset):
     result = os.path.join(parent_directory, "data", 'productivity_compensation_and_poverty_level.db')
 
     conn = sqlite3.connect(result)
-    dataset.to_sql('database', conn, if_exists='replace', index = False)
+    dataset.to_sql('productivity_compensation_and_poverty_level', conn, if_exists='replace', index = False)
     conn.close()
 
-if __name__ == "__main__":
-    
+
+def main():
     urls = [
     "asaniczka/productivity-and-hourly-compensation-1948-2021",
     "asaniczka/poverty-level-wages-in-the-usa-dataset-1973-2022"
     ]
 
-    select_poverty_columns = ["year", "annual_poverty-level_wage", "hourly_poverty-level_wage", "men_share_below_poverty_wages", "men_300%+_of_poverty_wages", "women_share_below_poverty_wages", "women_300%+_of_poverty_wages",]
+    select_poverty_columns = ["year","jj", "annual_poverty-level_wage", "hourly_poverty-level_wage", "men_share_below_poverty_wages", "men_300%+_of_poverty_wages", "women_share_below_poverty_wages", "women_300%+_of_poverty_wages"]
     select_productivity_columns = ["year", "net_productivity_per_hour_worked", "average_compensation", "median_compensation", "men_median_compensation", "women_median_compensation"]
 
     # EXTRACTION
@@ -102,11 +102,16 @@ if __name__ == "__main__":
 
     tf_productivity_dataset = transformSelectColumns(tf_productivity_dataset,select_productivity_columns)
     tf_poverty_data_set = transformSelectColumns(tf_poverty_data_set,select_poverty_columns)
+    print(tf_poverty_data_set.shape)
 
     tf_merged_dataset = transformMerge(tf_productivity_dataset, tf_poverty_data_set, "year")
     
     # LOAD
     loadDataSet(tf_merged_dataset)
+
+if __name__ == "__main__":
+    main()
+   
 
 
 
