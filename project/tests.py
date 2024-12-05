@@ -51,11 +51,7 @@ class pipeline_tests(unittest.TestCase):
 
         #Test2(b) invalid columns
         invalid_columns = ['year','wage', 'wrong','wrong2']
-      
-        # Calling transformSelectColumns with invalid columns
         transformed_data = transformSelectColumns(data, invalid_columns)
-
-        # Check that the resulting DataFrame has the shape (3, 2) — only the valid columns are included
         self.assertEqual(transformed_data.shape, (3, 2), f"Test Failed: Expected shape (3, 2), but got {transformed_data.shape}")
         print("Unit Test2 Passed: for transformSelectColumns() with invalid columns")
 
