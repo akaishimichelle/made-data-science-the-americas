@@ -8,6 +8,7 @@ from pipeline import(transformByYear, transformSelectColumns, transformMerge, tr
 class pipeline_tests(unittest.TestCase):
 
     def setUp(self):
+         """Environment cleanup before each test"""
          current_file = os.path.dirname(__file__)
          parent_directory = os.path.dirname(current_file)
          self.data_dir = os.path.join(parent_directory, "data")
