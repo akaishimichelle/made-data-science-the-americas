@@ -34,11 +34,6 @@ jobs:
           mkdir -p ~/.kaggle  
           echo "{\"username\":\"${KAGGLE_USERNAME}\",\"key\":\"${KAGGLE_KEY}\"}" > ~/.kaggle/kaggle.json
           chmod 600 ~/.kaggle/kaggle.json 
-      
-
-      - name: Test Kaggle authentication
-        run: |
-          kaggle datasets list
 
       - name: Run tests for pipeline
         run: |
