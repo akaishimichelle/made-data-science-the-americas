@@ -28,6 +28,13 @@ jobs:
         run: |
           pip install -r ./project/requirements.txt
 
+
+      - name: Set up Kaggle credentials
+        run: |
+          mkdir -p ~/.kaggle  
+          echo "${{ secrets.KAGGLE_JSON }}" > ~/.kaggle/kaggle.json  
+      
+
       - name: Run tests for pipeline
         run: |
           python ./project/tests.py
