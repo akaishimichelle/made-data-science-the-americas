@@ -32,6 +32,7 @@ jobs:
       - name: Set up Kaggle credentials
         run: |
           mkdir -p ~/.kaggle  
+          chmod 600 ~/.kaggle/kaggle.json
           echo "${{ secrets.KAGGLE_JSON }}" > ~/.kaggle/kaggle.json  
       
 
