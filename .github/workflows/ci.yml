@@ -36,4 +36,4 @@ jobs:
       # Run the tests
       - name: Run tests
         run: |
-          python tests.py
+          python ./project/tests.py
