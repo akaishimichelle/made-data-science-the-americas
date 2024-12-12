@@ -16,10 +16,7 @@ python3 -m venv venv
 # Activate the virtual environment
 source venv/bin/activate
 
-SCRIPT_DIR=$(dirname "$(realpath "$0")")
+SCRIPT_DIR=$(dirname "$(realpath "$0")") #absolute path
 
-REQUIREMENTS_FILE="$SCRIPT_DIR/requirements.txt"
-pip install -r "$REQUIREMENTS_FILE"
-
- PIPELINE_PY="$SCRIPT_DIR/pipeline.py"
- python3 "$PIPELINE_PY"
+PIPELINE_PY="$SCRIPT_DIR/pipeline.py"
+python3 "$PIPELINE_PY"

@@ -18,8 +18,5 @@ source venv/bin/activate
 
 SCRIPT_DIR=$(dirname "$(realpath "$0")")
 
-REQUIREMENTS_FILE="$SCRIPT_DIR/requirements.txt"
-pip install -r "$REQUIREMENTS_FILE"
-
 TESTS_PY="$SCRIPT_DIR/tests.py"
 python3 "$TESTS_PY"
