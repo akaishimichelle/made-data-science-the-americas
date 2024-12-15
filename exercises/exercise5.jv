@@ -1,0 +1,86 @@
+pipeline gtfs_Pipeline {
+
+  gtfsExtractor
+    -> gtfsArchiveInterpreter
+    -> gtfsFilePicker
+    -> gtfsTextFileInterpreter
+    -> gtfsCSVInterpreter
+    -> gtfsColumnDeleter
+    -> gtfsDataSelector
+    -> gtfssTableInterpreter
+    -> gtfsLoader;
+
+  //Blocks Description
+
+  block gtfsExtractor oftype HttpExtractor { //None --> Binary File
+
+    // Here, we specify the URL where the file shall be downloaded from.
+    url: "https://gtfs.rhoenenergie-bus.de/GTFS.zip";
+    }
+
+  block gtfsArchiveInterpreter oftype ArchiveInterpreter { //File --> FileSystem
+    archiveType: "zip";
+    }
+  
+  block gtfsFilePicker oftype FilePicker { //FileSystem --> File
+    path: "/stops.txt";
+    }
+
+  block gtfsTextFileInterpreter oftype TextFileInterpreter {} //File --> Text file
+   
+  block gtfsCSVInterpreter oftype CSVInterpreter { //Text file --> Sheet
+    delimiter: ',';
+    enclosing: '"';
+    }
+  
+  block gtfsColumnDeleter oftype ColumnDeleter { //Sheet --> Sheet
+    delete: [column B, column D];
+    }
+  
+  block gtfsDataSelector oftype CellRangeSelector { //Sheet --> Sheet
+   select: range A1:E*;
+   }
+
+  block gtfssTableInterpreter oftype TableInterpreter { //Sheet --> Table
+    header: true;
+    columns: [
+      "stop_id" oftype valid_id,
+      "stop_name" oftype valid_name,
+      "stop_lat" oftype valid_coordinates,
+      "stop_lon" oftype valid_coordinates,
+      "zone_id" oftype valid_zone,
+    ];
+  }
+
+ block gtfsLoader oftype SQLiteLoader { //Table --> None
+    table: "stops";
+    file: "./gtfs.sqlite";
+  }
+}
+
+publish valuetype valid_id oftype integer {
+    constraints: [ id_val ];
+}
+
+publish valuetype valid_name oftype text{
+  constraints: [regex_id,];
+ }
+
+publish valuetype valid_coordinates oftype decimal {
+    constraints: [ coordinates_val ];
+}
+
+publish valuetype valid_zone oftype integer {
+    constraints: [ zone_val ];
+}
+
+constraint id_val on integer:
+    value > 0;
+
+constraint regex_id on text: value matches /^[a-zA-ZäöüÄÖÜß\s./-]+$/;   
+
+constraint coordinates_val on decimal:
+    value >= -90 and value <=90;
+
+constraint zone_val on integer:
+    value == 1925;
