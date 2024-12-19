@@ -45,7 +45,7 @@ pipeline gtfs_Pipeline {
     header: true;
     columns: [
       "stop_id" oftype valid_id,
-      "stop_name" oftype valid_name,
+      "stop_name" oftype text,
       "stop_lat" oftype valid_coordinates,
       "stop_lon" oftype valid_coordinates,
       "zone_id" oftype valid_zone,
@@ -62,10 +62,6 @@ publish valuetype valid_id oftype integer {
     constraints: [ id_val ];
 }
 
-publish valuetype valid_name oftype text{
-  constraints: [regex_id,];
- }
-
 publish valuetype valid_coordinates oftype decimal {
     constraints: [ coordinates_val ];
 }
@@ -76,8 +72,6 @@ publish valuetype valid_zone oftype integer {
 
 constraint id_val on integer:
     value > 0;
-
-constraint regex_id on text: value matches /^[a-zA-ZäöüÄÖÜß\s./-]+$/;   
 
 constraint coordinates_val on decimal:
     value >= -90 and value <=90;
