@@ -1,3 +1,12 @@
+# A case study of economic dynamics in the USA from the 20th and 21st centuries; median compensation, productivity and poverty level trends   
+This case study explores the economic dynamics of the USA by examining trends in median compensation, productivity, and poverty-level wages over the course of the 20th and 21st centuries. It primarily investigates how changes in productivity and median compensation have influenced annual poverty level wages during two distinct time periods: the 1980-1990s and the 2010-2020s. Additionally, it delves into patterns based on gender, seeking to understand how these economic factors have differently impacted men and women over time. Moreover, I was quite interested in studying the patterns at the time of COVID-19 breakout (2019/2020) as well. 
+
+The study mainly tries to answer the question: "How has productivity and median compensation affected the annual poverty level wages in the USA from two distinct time periods?" along with the following subsequent questions: 
+
+a) What are some major patterns from the 2 time periods (1980-1990 vs 2010-2020)? 
+
+b) What are some major patterns based on gender for these parameters? 
+
 # Methods of Advanced Data Engineering Template Project
 
 This template project provides some structure for your open data project in the MADE module at FAU.
